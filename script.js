@@ -20,14 +20,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function animateReels() {
-        reel1.classList.add('spin');
-        reel2.classList.add('spin');
-        reel3.classList.add('spin');
+        reel1.classList.add('spin', 'hidden');
+        reel2.classList.add('spin', 'hidden');
+        reel3.classList.add('spin', 'hidden');
 
         setTimeout(() => {
-            reel1.classList.remove('spin');
-            reel2.classList.remove('spin');
-            reel3.classList.remove('spin');
+            reel1.classList.remove('spin', 'hidden');
+            reel2.classList.remove('spin', 'hidden');
+            reel3.classList.remove('spin', 'hidden');
 
             const result1 = spinReel();
             const result2 = spinReel();
