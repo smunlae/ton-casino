@@ -34,8 +34,9 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(360deg); }
+    0% { transform: rotateX(0deg); filter: blur(0); }
+    50% { filter: blur(3px); }
+    100% { transform: rotateX(360deg); filter: blur(0); }
 }
 
 .reel.spin {
