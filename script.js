@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const spinButton = document.getElementById('spinButton');
+    const connectWalletButton = document.getElementById('connectWalletButton');
     const reel1 = document.getElementById('reel1');
     const reel2 = document.getElementById('reel2');
     const reel3 = document.getElementById('reel3');
@@ -7,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const fireworksContainer = document.getElementById('fireworksContainer');
 
     const symbols = ['🍒', '🍋', '🍉', '🍇', '🍓'];
+    let walletConnected = false;
 
     function spinReel() {
         return symbols[Math.floor(Math.random() * symbols.length)];
@@ -71,5 +73,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    spinButton.addEventListener('click', animateReels);
+    async function connectWallet() {
+        try {
+            // Инициализируем TON Keeper
+            const tonkeeper = window.tonkeeper;
+
+            // Запрашиваем авторизацию
+            const response = await tonkeeper.request({
+                method: 'ton_requestAccounts'
+            });
+
+            // Обрабатываем ответ
+            if (response && response.result) {
+                const userAddress = response.result[0]; // Адрес пользователя
+                console.log('Wallet connected:', userAddress);
+
+                // Сохраните адрес кошелька в локальном хранилище или передайте на сервер
+                localStorage.setItem('walletAddress', userAddress);
+                
+                // Теперь пользователь может взаимодействовать с приложением
+                walletConnected = true;
+                result.textContent = 'Wallet connected! You can now play.';
+                spinButton.disabled = false;
+            } else {
+                result.textContent = 'Failed to connect wallet.';
+            }
+        } catch (error) {
+            result.textContent = 'Error connecting wallet.';
+            console.error('Error connecting wallet:', error);
+        }
+    }
+
+    connectWalletButton.addEventListener('click', connectWallet);
+
+    spinButton.addEventListener('click', function() {
+        if (walletConnected) {
+            animateReels();
+        } else {
+            alert('Please connect your wallet first.');
+        }
+    });
 });
