@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const spinButton = document.getElementById('spinButton');
-    const connectWalletButton = document.getElementById('connectWalletButton');
     const reel1 = document.getElementById('reel1');
     const reel2 = document.getElementById('reel2');
     const reel3 = document.getElementById('reel3');
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const fireworksContainer = document.getElementById('fireworksContainer');
 
     const symbols = ['🍒', '🍋', '🍉', '🍇', '🍓'];
-    let walletConnected = false;
 
     function spinReel() {
         return symbols[Math.floor(Math.random() * symbols.length)];
@@ -73,50 +71,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    async function connectWallet() {
-        try {
-            // Проверяем наличие TON SDK
-            if (!window.ton) {
-                throw new Error('TON SDK не найден. Проверьте подключение библиотеки.');
-            }
-
-            console.log('TON SDK найден. Начинаем подключение.');
-
-            // Инициализируем TonConnect SDK
-            const tonConnect = new TonConnect();
-
-            // Попробуем подключиться к кошельку
-            const response = await tonConnect.connect();
-            console.log('Ответ от TON Keeper:', response);
-
-            if (response && response.account) {
-                const userAddress = response.account.address;
-                console.log('Wallet connected:', userAddress);
-
-                // Сохраните адрес кошелька в локальном хранилище или передайте на сервер
-                localStorage.setItem('walletAddress', userAddress);
-
-                // Теперь пользователь может взаимодействовать с приложением
-                walletConnected = true;
-                result.textContent = 'Wallet connected! You can now play.';
-                spinButton.disabled = false;
-            } else {
-                result.textContent = 'Failed to connect wallet.';
-                console.error('Failed to connect wallet:', response);
-            }
-        } catch (error) {
-            result.textContent = 'Error connecting wallet: ' + error.message;
-            console.error('Error connecting wallet:', error);
-        }
-    }
-
-    connectWalletButton.addEventListener('click', connectWallet);
-
-    spinButton.addEventListener('click', function() {
-        if (walletConnected) {
-            animateReels();
-        } else {
-            alert('Please connect your wallet first.');
-        }
-    });
+    spinButton.addEventListener('click', animateReels);
 });
