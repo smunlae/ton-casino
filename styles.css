@@ -64,7 +64,7 @@ button:hover {
     font-size: 1.2em;
 }
 
-.fireworks {
+.fireworks-container {
     position: absolute;
     top: 0;
     left: 0;
@@ -76,28 +76,10 @@ button:hover {
 
 .firework {
     position: absolute;
-    bottom: 0;
-    width: 3px;
-    height: 50px;
-    background-color: #fff;
-    animation: explode 1s ease-out forwards;
-}
-
-@keyframes explode {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-200px); opacity: 0; }
-}
-
-@keyframes spark {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(0); opacity: 0; }
-}
-
-.spark {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    background-color: #ff0;
-    border-radius: 50%;
-    animation: spark 0.5s linear forwards;
+    width: 100px;
+    height: 100px;
+    background-image: url('firework.gif'); /* путь к GIF файлу с анимацией салюта */
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: none;
 }
