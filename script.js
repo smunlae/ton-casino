@@ -113,4 +113,5 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Please connect your wallet first.');
         }
     });
+    
 });
