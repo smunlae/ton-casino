@@ -75,28 +75,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function connectWallet() {
         try {
-            // Инициализируем TON Keeper
+            if (window.tonkeeper) {
+                console.log('TON Keeper SDK найден');
+            } else {
+                console.error('TON Keeper SDK не найден');
+                result.textContent = 'TON Keeper SDK не найден';
+                return;
+            }
+
             const tonkeeper = window.tonkeeper;
 
-            // Запрашиваем авторизацию
+            console.log('Запрашиваем авторизацию');
             const response = await tonkeeper.request({
                 method: 'ton_requestAccounts'
             });
 
-            // Обрабатываем ответ
+            console.log('Ответ от TON Keeper:', response);
+
             if (response && response.result) {
                 const userAddress = response.result[0]; // Адрес пользователя
                 console.log('Wallet connected:', userAddress);
 
                 // Сохраните адрес кошелька в локальном хранилище или передайте на сервер
                 localStorage.setItem('walletAddress', userAddress);
-                
+
                 // Теперь пользователь может взаимодействовать с приложением
                 walletConnected = true;
                 result.textContent = 'Wallet connected! You can now play.';
                 spinButton.disabled = false;
             } else {
                 result.textContent = 'Failed to connect wallet.';
+                console.error('Failed to connect wallet.', response);
             }
         } catch (error) {
             result.textContent = 'Error connecting wallet.';
