@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ton Casino</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tonkeeper/sdk@latest"></script>
 </head>
 <body>
     <div class="casino-container">
@@ -14,7 +15,8 @@
             <div class="reel" id="reel2">🍋</div>
             <div class="reel" id="reel3">🍉</div>
         </div>
-        <button id="spinButton">Spin</button>
+        <button id="connectWalletButton">Connect Wallet</button>
+        <button id="spinButton" disabled>Spin</button>
         <p id="result"></p>
     </div>
     <div class="fireworks-container" id="fireworksContainer"></div>
