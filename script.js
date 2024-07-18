@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const reel2 = document.getElementById('reel2');
     const reel3 = document.getElementById('reel3');
     const result = document.getElementById('result');
-    const fireworksContainer = document.getElementById('fireworks');
+    const fireworksContainer = document.getElementById('fireworksContainer');
 
     const symbols = ['🍒', '🍋', '🍉', '🍇', '🍓'];
 
@@ -48,28 +48,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function launchFireworks() {
-        for (let i = 0; i < 10; i++) {
-            const firework = document.createElement('div');
-            firework.classList.add('firework');
-            firework.style.left = `${Math.random() * 100}%`;
-            firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-
-            fireworksContainer.appendChild(firework);
-
-            setTimeout(() => {
-                firework.remove();
-            }, 1000);
-
-            for (let j = 0; j < 30; j++) {
-                const spark = document.createElement('div');
-                spark.classList.add('spark');
-                spark.style.left = `${Math.random() * 100}px`;
-                spark.style.top = `${Math.random() * 100}px`;
-                spark.style.backgroundColor = firework.style.backgroundColor;
-
-                firework.appendChild(spark);
-            }
+        const positions = [];
+        for (let i = 0; i < 3; i++) {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            positions.push({ x, y });
         }
+
+        positions.forEach((pos, index) => {
+            setTimeout(() => {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.left = `${pos.x}px`;
+                firework.style.top = `${pos.y}px`;
+                fireworksContainer.appendChild(firework);
+                firework.style.display = 'block';
+
+                setTimeout(() => {
+                    firework.remove();
+                }, 2000); // Длительность отображения салюта 2 секунды
+            }, index * 100); // Задержка 0.1 секунды для каждого салюта
+        });
     }
 
     spinButton.addEventListener('click', animateReels);
