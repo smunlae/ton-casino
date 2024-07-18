@@ -75,16 +75,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function connectWallet() {
         try {
-            // Используем библиотеку tonconnect для подключения кошелька
+            // Проверяем наличие TON SDK
+            if (!window.ton) {
+                throw new Error('TON SDK не найден. Проверьте подключение библиотеки.');
+            }
+
+            console.log('TON SDK найден. Начинаем подключение.');
+
+            // Инициализируем TonConnect SDK
             const tonConnect = new TonConnect();
 
-            // Пытаемся подключиться
-            const walletConnection = await tonConnect.connect();
+            // Попробуем подключиться к кошельку
+            const response = await tonConnect.connect();
+            console.log('Ответ от TON Keeper:', response);
 
-            console.log('Ответ от TON Keeper:', walletConnection);
-
-            if (walletConnection && walletConnection.account) {
-                const userAddress = walletConnection.account; // Адрес пользователя
+            if (response && response.account) {
+                const userAddress = response.account.address;
                 console.log('Wallet connected:', userAddress);
 
                 // Сохраните адрес кошелька в локальном хранилище или передайте на сервер
@@ -96,10 +102,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 spinButton.disabled = false;
             } else {
                 result.textContent = 'Failed to connect wallet.';
-                console.error('Failed to connect wallet.', walletConnection);
+                console.error('Failed to connect wallet:', response);
             }
         } catch (error) {
-            result.textContent = 'Error connecting wallet.';
+            result.textContent = 'Error connecting wallet: ' + error.message;
             console.error('Error connecting wallet:', error);
         }
     }
@@ -113,5 +119,4 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Please connect your wallet first.');
         }
     });
-    
 });
